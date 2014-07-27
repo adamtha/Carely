@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+
+    <title>Carely</title>
+    <link rel="stylesheet" href="stylesheets/screen.css" media="Screen" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-width: 480px), only screen and (max-device-width: 480px)" type="text/css" />
+	<link rel="stylesheet" href="stylesheets/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+
+
+    <!--[if IEMobile]>
+    <link rel="stylesheet" href="mobile.css" media="screen" type="text/css"  />
+    <![endif]-->
+
+     <% if (req && req.activity) { %>
+		<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# carelyactions: http://ogp.me/ns/fb/carelyactions#">
+		<meta property="og:type"                        content="carelyactions:activity" /> 
+		<meta property="og:url"                         content="<%= req.activity.url %>" /> 
+		<meta property="og:title"                       content="<%= req.activity.title %>" /> 
+		<meta property="og:image"                       content="<%= req.activity.image %>" /> 
+		<meta property="og:description"                 content="<%= req.activity.description %>" />
+		<% if (req.activity.suggester) { %>
+		<meta property="carelyactions:suggester" content="<%= req.activity.suggester %>" />
+		<% } %> 
+		<meta property="carelyactions:done" content="<%= req.activity.done %>" />
+		<meta property="carelyactions:attributes" content="<%= req.activity.attributes %>" />
+	 <% } else { %>
+		<meta property="og:title" content="Carely" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="http://carely.herokuapp.com" />
+		<meta property="og:image" content="http://carely.herokuapp.com/images/carely_icon.png" />
+		<meta property="og:description" content="Carely is a free service that lets you share the activities you care about." />
+		
+	<% } %>
+		<meta property="fb:app_id" content="447780868588797" />
+		<meta property="og:site_name" content="Carely" />
+		
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/jquery.prettyPhoto.js"></script>
+	
+	<script type="text/javascript">
+		function swapImages() {
+		var $active = $('#myGallery .active');
+		var $next = ($('#myGallery .active').next().length > 0) ? $('#myGallery .active').next() : $('#myGallery img:first');
+		$active.removeClass('active');
+		$next.addClass('active');
+	}
+
+	$(document).ready(function() {
+		// Run our swapImages() function every 5 seconds
+		setInterval(function() {swapImages();}, 5000);
+	});
+	</script>
+	
+    <script type="text/javascript">
+      function logResponse(response) {
+        if (console && console.log) {
+          console.log('The response was', response);
+        }
+      }
+
+      $(function(){
+        // Set up so we handle click on the buttons
+        $('#postToWall').click(function() {
+          FB.ui(
+            {
+              method : 'feed',
+              link   : 'http://care.ly',
+			  caption : 'Carely is a free service that lets you share the activities you care about.'
+            },
+            function (response) {
+              // If response is null the user canceled the dialog
+              if (response != null) {
+                logResponse(response);
+              }
+            }
+          );
+        });
+
+        $('#sendRequest').click(function() {
+          FB.ui(
+            {
+              method  : 'apprequests',
+			  title : 'Invite your friends to Carely',
+              message : 'Checkout Carely, its awesome...',
+			  filters : ['app_non_users']
+            },
+            function (response) {
+              // If response is null the user canceled the dialog
+              if (response != null) {
+                logResponse(response);
+              }
+            }
+          );
+        });
+      });
+    </script>
+
+    <!--[if IE]>
+      <script type="text/javascript">
+        var tags = ['header', 'section'];
+        while(tags.length)
+          document.createElement(tags.pop());
+      </script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script type="text/javascript">
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '447780868588797', // App ID
+          channelUrl : '<%= url_no_scheme('/channel.html') %>', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+		  oauth: true, // enable OAuth 2.0
+          xfbml      : true // parse XFBML
+        });
+
+        // Listen to the auth.login which will be called when the user logs in
+        // using the Login button
+        FB.Event.subscribe('auth.login', function(response) {
+          // We want to reload the page now so PHP can read the cookie that the
+          // Javascript SDK sat. But we don't want to use
+          // window.location.reload() because if this is in a canvas there was a
+          // post made to this page and a reload will trigger a message to the
+          // user asking if they want to send data again.
+          window.location = window.location;
+        });
+
+        FB.Canvas.setAutoGrow();
+      };
+
+      // Load the SDK Asynchronously
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+	
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	
+    <header class="clearfix">
+      <% if (user) { %>
+      <p id="picture" style="background-image: url(https://graph.facebook.com/<%= user.id %>/picture?type=normal)"></p>
+
+      <div>
+        <h1>Welcome, <strong><%= user.name %></strong></h1>
+        <div id="share-app">
+          <ul>
+            <li>
+              <a href="#" class="facebook-button" id="postToWall">
+                <span class="speech-bubble">Post on your Wall</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="facebook-button" id="sendRequest">
+                <span class="plus">Invite friends</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <% } else { %>
+      <div>
+        <h1>Welcome</h1>
+        <div class="fb-login-button" data-scope="user_likes,user_photos"></div>
+      </div>
+      <% } %>
+    </header>
+	
+	<section>
+		<img src="../images/carely_icon.png" alt="" height="80" width="80" class="logo"></img>
+		<div class="para-container">
+		<p class="first">Welcome to Carely</p>
+		<p>Carely is a free service that lets you share the activities you care about.</p>
+		<p>Using the Carely app, users can select actions, check-in to them and see what their friends are doing. Group managers can create a set of activities for their group, suggest new actions and events and monitor the groups activity.</p>
+		</div>
+		<img src="../images/iphone-ddf.jpg" alt="" class="iphone" />
+		<div id="myGallery">
+			<img src="../images/carely_screen_1.png" class="active"  />
+			<img src="../images/carely_screen_2.png" />
+			<img src="../images/carely_screen_3.png" />
+			<img src="../images/carely_screen_4.png" />
+			<img src="../images/carely_screen_5.png" />
+		</div>
+		<img src="../images/iphone-shadow-reflection.jpg" alt="" class="iphone-shadow" />
+	</section>
+	<section>
+		<div class="body-center">
+			<a href="http://vimeo.com/48727787?width=747&height=420" class="button_link prettyPhoto" style="" rel="prettyPhoto" title="Carely in action" ><span>Watch a demo</span></a>
+			<a href="http://care.ly" class="button_link" style="" target="_blank" ><span>Visit Care.ly!</span></a>
+			<a href="http://itunes.apple.com/il/app/carely-actions/id555614041?mt=8" class="appstore"></a>
+		</div>
+	</section>
+	
+	<section>
+	<div class="share-this">
+		<h3><br>Share It</h3>
+		<ul>
+		<li>
+		<div class="fb-like" data-href="http://care.ly" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="verdana"></div>
+		</li>
+		<li>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://care.ly" data-text="Checkout Carely, its awesome...">Tweet</a>
+		</li>
+		</ul>
+	</div>
+	</section>
+	<script type="text/javascript" charset="utf-8">
+	  $(document).ready(function(){
+		$("a[rel^='prettyPhoto']").prettyPhoto();
+	  });
+	</script>
+  </body>
+</html>
+

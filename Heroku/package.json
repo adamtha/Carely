@@ -1,0 +1,17 @@
+{
+  "name":    "Carely",
+  "version": "0.0.1",
+
+  "description": "Carely is a free service that lets you share the activities you care about.",
+
+  "dependencies": {
+    "async":     "0.1.18",
+    "ejs":       "0.4.3",
+    "express":   "2.4.6",
+    "faceplate": "0.0.4"
+  },
+
+  "engines": {
+    "node": "0.6.x"
+  }
+}
