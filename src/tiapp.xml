@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ti:app xmlns:ti="http://ti.appcelerator.org">
+    <deployment-targets>
+        <target device="tizen">false</target>
+        <target device="mobileweb">false</target>
+        <target device="iphone">true</target>
+        <target device="ipad">false</target>
+        <target device="android">false</target>
+        <target device="blackberry">false</target>
+    </deployment-targets>
+    <sdk-version>3.1.1.GA</sdk-version>
+    <id>com.carely.carelyactions</id>
+    <name>Toddler Play</name>
+    <version>7.3</version>
+    <publisher>Carely</publisher>
+    <url>http://care.ly</url>
+    <description>Discover and share the activities for your toddler</description>
+    <copyright>2013 by Carely</copyright>
+    <icon>appicon.png</icon>
+    <fullscreen>false</fullscreen>
+    <navbar-hidden>false</navbar-hidden>
+    <analytics>false</analytics>
+    <guid>bf1e4f34-b607-456b-aff3-a163d45663d4</guid>
+    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <modules>
+        <module platform="commonjs" version="2.3.6">ti.cloud</module>
+        <module platform="iphone">ti.imagefactory</module>
+        <module platform="iphone" version="1.8">bencoding.sms</module>
+        <module platform="iphone">facebook</module>
+        <module platform="iphone">analytics.google</module>
+    </modules>
+    <property name="ti.ui.defaultunit">system</property>
+    <property name="ti.facebook.appid">447780868588797</property>
+    <property name="acs-oauth-secret-production" type="string">ACS_OAUTH_SECRET_PRODUCTION</property>
+    <property name="acs-oauth-key-production" type="string">HxZ9fykTxyYoc9o6Y28fbdZkoQrkmpAc</property>
+    <property name="acs-api-key-production" type="string">62E2f6XQcFJ2BZg3HkCEppnq1w3uu2UV</property>
+    <property name="acs-oauth-secret-development" type="string">ACS_OAUTH_SECRET_DEV</property>
+    <property name="acs-oauth-key-development" type="string">HxZ9fykTxyYoc9o6Y28fbdZkoQrkmpAc</property>
+    <property name="acs-api-key-development" type="string">62E2f6XQcFJ2BZg3HkCEppnq1w3uu2UV</property>
+    <ios>
+        <plist>
+            <dict>
+                <key>UIRequiresPersistentWiFi</key>
+                <false/>
+                <key>UIPrerenderedIcon</key>
+                <true/>
+                <key>UIStatusBarHidden</key>
+                <false/>
+                <key>UIStatusBarStyle</key>
+                <string>UIStatusBarStyleDefault</string>
+                <key>UISupportedInterfaceOrientations</key>
+                <array>
+                    <string>UIInterfaceOrientationPortrait</string>
+                </array>
+            </dict>
+        </plist>
+    </ios>
+</ti:app>
